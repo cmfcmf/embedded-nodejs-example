@@ -1,3 +1,11 @@
+/externals
+!/externals/.gitkeep
+/ubuntu-xenial*
+
+
+# Created by https://www.gitignore.io/api/c++,cmake,vagrant,visualstudiocode
+
+### C++ ###
 # Prerequisites
 *.d
 
@@ -31,8 +39,7 @@
 *.out
 *.app
 
-
-# CMAKE:
+### CMake ###
 CMakeCache.txt
 CMakeFiles
 CMakeScripts
@@ -42,5 +49,18 @@ cmake_install.cmake
 install_manifest.txt
 compile_commands.json
 CTestTestfile.cmake
+build
 
-embedded-nodejs-example
+### Vagrant ###
+.vagrant/
+*.box
+
+### VisualStudioCode ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history
+
+# End of https://www.gitignore.io/api/c++,cmake,vagrant,visualstudiocode
