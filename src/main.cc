@@ -1,10 +1,19 @@
-#include <stdio.h>
+#include <iostream>
 #include "node.h"
 
+using namespace v8;
+
+int count = 0;
+
+void demoExport(const FunctionCallbackInfo<Value>& args) {
+    std::cout << "this method is a very simple export" << std::endl;
+    count++;
+}
 
 void onRegisterModule(Local<v8::Object> exports, Local<Value>, Local<Context>, void * data)
 {
-    std::cout << "onRegisterModule() for NodeEngine was called"  << std::endl;
+    std::cout << "onRegisterModule() for CppDemoModule was called"  << std::endl;
+    NODE_SET_METHOD(exports, "demoExport", demoExport);
 }
 
 
@@ -40,7 +49,7 @@ int main(int argc, char* argv[]) {
         __FILE__,
         nullptr,
         onRegisterModule,
-        "NodeEngine",
+        "CppDemoModule",
         nullptr, // nm_priv, will be given to onRegisterModule as data? i.e. "this" pointer
         nullptr
     };
@@ -48,7 +57,9 @@ int main(int argc, char* argv[]) {
     // Register module
     node_module_register(&_module);
 
-    printf("Hello World from embedding C++!\n");
+    std::cout << "Hello World from embedding C++!" << std::endl;
+    std::cout << "Count before node: " << count << std::endl;
     node::Start(argc, argv);
+    std::cout << "Count after node: " << count << std::endl;
     return 0;
 }
