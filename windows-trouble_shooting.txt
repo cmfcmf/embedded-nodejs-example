@@ -1,0 +1,13 @@
+#1: Can not start vagrant for the first time
+Setup:
+Windows 10, 64-bit
+VM Provider: VirtualBox 5.1.30
+
+Problem:
+When trying to start the vagrant VM for the very first time, the process will stop after a while, stating that some IP addresses for ubuntu packages were not found.
+
+Solution:
+- Try starting the virtual machine via the VirtualBox GUI (start VirtualBox GUI as administrator).
+- When you need to enter the machines username and password look for it in your local Vagrant directory for the VMs configuration (example: C:\Users\YOUR NAME\.vagrant.d\boxes) and find the Vagrant-file. There, you will find the username and password of your machine.
+- Execute 'sudo apt-get update' manually in the VirtualBox GUI.
+- Exit the VirtualBox UI and shutdown the vm entirely. Afterwards start vagrant via 'vagrant up' again.
