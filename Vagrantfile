@@ -12,7 +12,8 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", inline: <<-SHELL
     set -ev
     cd /vagrant
-    sudo apt -y install python g++ make --fix-missing
+    apt -y update
+    apt -y install python g++ make --fix-missing
 
     cd externals
     wget http://nodejs.org/dist/v9.0.0/node-v9.0.0.tar.gz
