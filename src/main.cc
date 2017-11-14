@@ -5,6 +5,44 @@ using namespace v8;
 
 int count = 0;
 
+
+using v8::Context;
+using v8::Function;
+using v8::FunctionCallbackInfo;
+using v8::FunctionTemplate;
+using v8::Isolate;
+using v8::Local;
+using v8::Number;
+using v8::Object;
+using v8::Persistent;
+using v8::String;
+using v8::Value;
+using v8::Array;
+using v8::Exception;
+
+// Logging function for objects
+void cppLog(const FunctionCallbackInfo<Value>& args) {
+  Isolate* isolate = args.GetIsolate();
+
+  if(args.Length() < 1 || !args[0]->IsObject()) {
+    isolate->ThrowException(Exception::TypeError(
+    String::NewFromUtf8(isolate, "Error: One object expected")));
+    return;
+  }
+
+  Local<Context> context = isolate->GetCurrentContext();
+  Local<Object> obj = args[0]->ToObject(context).ToLocalChecked();
+  Local<Array> props = obj->GetOwnPropertyNames(context).ToLocalChecked();
+
+  for(int i = 0, l = props->Length(); i < l; i++) {
+    Local<Value> localKey = props->Get(i);
+    Local<Value> localVal = obj->Get(context, localKey).ToLocalChecked();
+    std::string key = *String::Utf8Value(localKey);
+    std::string val = *String::Utf8Value(localVal);
+    std::cout << key << ":" << val << std::endl;
+  }
+}
+
 void demoExport(const FunctionCallbackInfo<Value>& args) {
     std::cout << "this method is a very simple export" << std::endl;
     count++;
@@ -14,6 +52,7 @@ void onRegisterModule(Local<v8::Object> exports, Local<Value>, Local<Context>, v
 {
     std::cout << "onRegisterModule() for CppDemoModule was called"  << std::endl;
     NODE_SET_METHOD(exports, "demoExport", demoExport);
+    NODE_SET_METHOD(exports, "cppLog", cppLog);
 }
 
 
